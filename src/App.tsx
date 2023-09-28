@@ -8,7 +8,7 @@ window.Telegram = window.Telegram || {};
 function App() {
   const handleTelegramLogin = () => {
     window.Telegram.Login.auth(
-      {bot_id: 'demo_babbu_login_bot', request_access: true},
+      {bot_id: '6546635625', request_access: true},
       (data: any) => {
         if (!data) {
           // authorization failed
