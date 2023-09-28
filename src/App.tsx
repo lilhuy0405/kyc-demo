@@ -1,8 +1,12 @@
-import {useEffect} from "react";
+
+declare global {
+  interface Window { Telegram: any; }
+}
+
+window.Telegram = window.Telegram || {};
 
 function App() {
   const handleTelegramLogin = () => {
-    //@ts-ignore
     window.Telegram.Login.auth(
       {bot_id: 'demo_babbu_login_bot', request_access: true},
       (data: any) => {
