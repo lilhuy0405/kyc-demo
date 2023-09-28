@@ -1,4 +1,4 @@
-# KYC exmample for Babbu
+# KYC example for Babbu
 ## 1. Login with telegram 
 - using telegram bot login with login widget: https://core.telegram.org/widgets/login
 - First, includes this script tag in index.html
