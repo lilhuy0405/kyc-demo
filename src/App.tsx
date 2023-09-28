@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {useLogin} from "react-facebook";
+import {LoginStatus, useFacebook, useLogin} from "react-facebook";
 
 declare global {
   interface Window {
@@ -15,8 +15,9 @@ window.Telegram = window.Telegram || {};
 
 function App() {
   const [telegramLoginData, setTelegramLoginData] = useState<any>(null);
-  const {login, status, isLoading, error} = useLogin();
-  console.log(status, isLoading, error)
+  const [fbProfile, setFbProfile] = useState<any>(null);
+  const {login, isLoading} = useLogin();
+  const {init} = useFacebook();
   const handleTelegramLogin = () => {
     window.Telegram.Login.auth(
       {bot_id: '6546635625', request_access: true},
@@ -37,10 +38,25 @@ function App() {
   const handleLoginFacebook = async () => {
     try {
       const response = await login({
-        scope: 'public_profile',
+        scope: 'email',
       });
-
-      console.log(response);
+      if (response.status !== LoginStatus.CONNECTED) {
+        throw new Error('Facebook Login failed');
+      }
+      //fetch user profile
+      const api = await init();
+      if (!api) {
+        throw new Error('Facebook API failed to initialize');
+      }
+      console.log(response)
+      const profile: any = await api.getProfile({
+        fields: ['id', 'first_name', 'last_name', 'middle_name', 'name', 'name_format', 'picture', 'short_name', 'email']
+      });
+      console.log(profile);
+      setFbProfile({
+        ...profile,
+        accessToken: response.authResponse.accessToken,
+      });
     } catch (error: any) {
       console.log(error.message);
     }
@@ -63,6 +79,14 @@ function App() {
           <>
             <h2>Telegram Login Data</h2>
             <pre>{JSON.stringify(telegramLoginData, null, 2)}</pre>
+          </>
+        )}
+      </div>
+      <div>
+        {fbProfile && (
+          <>
+            <h2>Facebook Profile</h2>
+            <pre>{JSON.stringify(fbProfile, null, 2)}</pre>
           </>
         )}
       </div>
