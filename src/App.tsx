@@ -1,8 +1,13 @@
 import {useState} from "react";
+import {useLogin} from "react-facebook";
 
 declare global {
   interface Window {
-    Telegram: any;
+    Telegram: {
+      Login: {
+        auth: (options: any, callback: (data: any) => void) => void;
+      }
+    };
   }
 }
 
@@ -10,6 +15,8 @@ window.Telegram = window.Telegram || {};
 
 function App() {
   const [telegramLoginData, setTelegramLoginData] = useState<any>(null);
+  const {login, status, isLoading, error} = useLogin();
+  console.log(status, isLoading, error)
   const handleTelegramLogin = () => {
     window.Telegram.Login.auth(
       {bot_id: '6546635625', request_access: true},
@@ -26,12 +33,31 @@ function App() {
       }
     );
   }
+
+  const handleLoginFacebook = async () => {
+    try {
+      const response = await login({
+        scope: 'email',
+      });
+
+      console.log(response.status);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
   return (
     <>
       <h1>KYC Demo for Babbu</h1>
-      <button onClick={handleTelegramLogin}>
-        Login with Telegram
-      </button>
+      <div>
+        <button onClick={handleTelegramLogin}>
+          Login with Telegram
+        </button>
+      </div>
+      <div>
+        <button onClick={handleLoginFacebook} disabled={isLoading}>
+          Login via Facebook
+        </button>
+      </div>
       <div>
         {telegramLoginData && (
           <>
