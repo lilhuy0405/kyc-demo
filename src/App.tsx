@@ -37,10 +37,10 @@ function App() {
   const handleLoginFacebook = async () => {
     try {
       const response = await login({
-        scope: 'email',
+        scope: 'public_profile',
       });
 
-      console.log(response.status);
+      console.log(response);
     } catch (error: any) {
       console.log(error.message);
     }
