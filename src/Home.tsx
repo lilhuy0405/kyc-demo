@@ -1,11 +1,13 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {LoginStatus, useFacebook, useLogin} from "react-facebook";
+import querystring from "query-string";
 
 const Home = () => {
   const [telegramLoginData, setTelegramLoginData] = useState<any>(null);
   const [fbProfile, setFbProfile] = useState<any>(null);
   const {login, isLoading} = useLogin();
   const {init} = useFacebook();
+
   const handleTelegramLogin = () => {
     window.Telegram.Login.auth(
       {bot_id: '6546635625', request_access: true},
@@ -66,12 +68,22 @@ const Home = () => {
       if (!url) {
         throw new Error("Twitter Login failed");
       }
-      //go to twitter login page
-      window.location.href = url;
+      const authUrlParsed = querystring.parse(url);
+      const stateCode = authUrlParsed.state as string;
+      //save state code to local storage
+      localStorage.setItem("stateCode", stateCode);
+      //open auth url in new window
+      window.open(url, "_blank", "width=500,height=500");
     } catch (error: any) {
       console.log(error.message);
     }
   }
+
+  useEffect(() => {
+    window.addEventListener('message', (event) => {
+      console.log(event.data);
+    });
+  }, []);
   return (
     <>
       <h1>KYC Demo for Babbu</h1>
