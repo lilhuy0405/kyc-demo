@@ -11,6 +11,7 @@ const TwitterLoginCb = () => {
     if (error) {
       //when error, remove stateCode from local storage
       window.localStorage.removeItem('stateCode');
+      window.open("", "_self");
       window.close();
       return;
     }
@@ -18,17 +19,20 @@ const TwitterLoginCb = () => {
       //user login with twitter successfully
       window.localStorage.removeItem('stateCode');
       window.localStorage.setItem('jwt', accessToken);
+      window.open("", "_self");
       window.close();
       return;
     }
     if (stateInQuery && stateInLocalStorage && stateInQuery === stateInLocalStorage) {
       //user kyc with twitter successfully
       window.localStorage.removeItem('stateCode');
+      window.open("", "_self");
       window.close();
       return;
     }
     //close
     window.localStorage.removeItem('stateCode');
+    window.open("", "_self");
     window.close();
 
   }, [searchParams, stateInLocalStorage]);
