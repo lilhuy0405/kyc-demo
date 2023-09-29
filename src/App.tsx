@@ -61,6 +61,29 @@ function App() {
       console.log(error.message);
     }
   }
+  const handleLoginTwitter = async () => {
+    try {
+      const response = await fetch("https://backend-airdrop-app.vinhomes.co.uk/user-kyc/twitter/auth", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        }
+      })
+      if (!response.ok) {
+        throw new Error("Twitter Login failed");
+      }
+      const data = await response.json();
+      const {url} = data.data;
+      if (!url) {
+        throw new Error("Twitter Login failed");
+      }
+      //go to twitter login page
+      window.location.href = url;
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
   return (
     <>
       <h1>KYC Demo for Babbu</h1>
@@ -72,6 +95,11 @@ function App() {
       <div>
         <button onClick={handleLoginFacebook} disabled={isLoading}>
           Login via Facebook
+        </button>
+      </div>
+      <div>
+        <button onClick={handleLoginTwitter}>
+          Login via Twitter
         </button>
       </div>
       <div>
