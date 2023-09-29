@@ -79,11 +79,6 @@ const Home = () => {
     }
   }
 
-  useEffect(() => {
-    window.addEventListener('message', (event) => {
-      console.log(event.data);
-    });
-  }, []);
   return (
     <>
       <h1>KYC Demo for Babbu</h1>
