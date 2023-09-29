@@ -11,21 +11,19 @@ const TwitterLoginCb = () => {
     if (error) {
       //when error, remove stateCode from local storage
       window.localStorage.removeItem('stateCode');
-      window.opener.postMessage({error}, window.location.origin);
       window.close();
       return;
     }
     if (stateInQuery && stateInLocalStorage && stateInQuery === stateInLocalStorage && accessToken) {
       //user login with twitter successfully
       window.localStorage.removeItem('stateCode');
-      window.opener.postMessage({accessToken}, window.location.origin);
+      window.localStorage.setItem('jwt', accessToken);
       window.close();
       return;
     }
     if (stateInQuery && stateInLocalStorage && stateInQuery === stateInLocalStorage) {
       //user kyc with twitter successfully
       window.localStorage.removeItem('stateCode');
-      window.opener.postMessage({message: "connected to twitter"}, window.location.origin);
       window.close();
       return;
     }
