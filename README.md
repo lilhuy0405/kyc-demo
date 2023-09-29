@@ -50,4 +50,7 @@ console.log(profile);
 }` The API will use access token to check that is the request body is from the facebook application as registed and is the data is valid
 
 ## 3 Login with twitter
-- To implement....
+- Login or kyc with twitter using Oauth2
+- first call `/user-kyc/twitter/logged/auth` with Get method if you have logged in and want to kyc with twiiter. Otherwise call `/user-kyc/twitter/auth` when need to login with twitter. This'll return an auth url open it then author the twitter account
+- When login process done BE will redirect to this page in fe `/twitter-login-callback` this path can config With these params: `jwt`, `error`, `state`
+- Mapping the state at the params of auth url below to this state if is equals => a valid callback then set the jwt to local storage if it exist if jwt is empty string and error is null => user kyc with twitter success
