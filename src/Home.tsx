@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {LoginStatus, useFacebook, useLogin} from "react-facebook";
 import querystring from "query-string";
 
